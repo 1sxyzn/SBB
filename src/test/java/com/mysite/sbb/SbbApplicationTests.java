@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 class SbbApplicationTests {
 
-    @Autowired
+    @Autowired // DI에 의해 스프링이 자동으로 QuestionRepository 객체를 생성 = 프록시 패턴 사용
     private QuestionRepository questionRepository;
 
     @Test
@@ -32,6 +32,12 @@ class SbbApplicationTests {
             Question q = oq.get();
             assertEquals("SBB는 무엇인가요?", q.getSubject());
         }
+    }
+
+    @Test
+    void testJpa3(){
+        Question q = this.questionRepository.findBySubject("SBB는 무엇인가요?");
+        assertEquals(1, q.getId());
     }
 
 }
