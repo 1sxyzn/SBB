@@ -46,4 +46,11 @@ class SbbApplicationTests {
         assertEquals(1, q.getId());
     }
 
+    @Test
+    void testJpa5(){
+        List<Question> qList = this.questionRepository.findBySubjectLike("SBB%");
+        Question q  = qList.get(0);
+        assertEquals("SBB는 무엇인가요?", q.getSubject());
+    }
+
 }
