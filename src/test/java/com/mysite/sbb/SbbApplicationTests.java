@@ -17,6 +17,9 @@ class SbbApplicationTests {
     @Autowired // DI에 의해 스프링이 자동으로 QuestionRepository 객체를 생성 = 프록시 패턴 사용
     private QuestionRepository questionRepository;
 
+    @Autowired
+    private AnswerRepository answerRepository;
+
     @Test
     void testJpa(){ // 데이터 조회
         List<Question> all = this.questionRepository.findAll();
@@ -71,6 +74,19 @@ class SbbApplicationTests {
         Question q = oq.get();
         this.questionRepository.delete(q);
         assertEquals(1, this.questionRepository.count());
+    }
+
+    @Test
+    void testJpa8(){ // 답변 데이터 생성, 저장
+        Optional<Question> oq = this.questionRepository.findById(2);
+        assertTrue(oq.isPresent());
+        Question q = oq.get();
+
+        Answer a = new Answer();
+        a.setContent("네. ID는 자동으로 생성됩니다.");
+        a.setQuestion(q);  // 어떤 질문의 답변인지 알기위한 Question 객체
+        a.setCreateDate(LocalDateTime.now());
+        this.answerRepository.save(a);
     }
 
 }
