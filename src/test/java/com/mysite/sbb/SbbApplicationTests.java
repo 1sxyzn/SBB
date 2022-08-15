@@ -67,7 +67,7 @@ class SbbApplicationTests {
     }
 
     @Test
-    void testJpa7(){
+    void testJpa7(){ // 데이터 삭제
         assertEquals(2, this.questionRepository.count());
         Optional<Question> oq = this.questionRepository.findById(1);
         assertTrue(oq.isPresent()); // 값이 True인지 확인
@@ -87,6 +87,14 @@ class SbbApplicationTests {
         a.setQuestion(q);  // 어떤 질문의 답변인지 알기위한 Question 객체
         a.setCreateDate(LocalDateTime.now());
         this.answerRepository.save(a);
+    }
+
+    @Test
+    void testJpa9(){ // 답변 조회
+        Optional<Answer> oa = this.answerRepository.findById(1); // findById의 리턴 타입이 Optional임
+        assertTrue(oa.isPresent());
+        Answer a = oa.get();
+        assertEquals(2, a.getQuestion().getId());
     }
 
 }
