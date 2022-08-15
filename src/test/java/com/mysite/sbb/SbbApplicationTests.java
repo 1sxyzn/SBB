@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class SbbApplicationTests {
@@ -14,17 +17,11 @@ class SbbApplicationTests {
 
     @Test
     void testJpa(){
-        Question q1 = new Question();
-        q1.setSubject("SBB는 무엇인가요?");
-        q1.setContent("SBB에 대해서 알고 싶습니다.");
-        q1.setCreateDate(LocalDateTime.now());
-        this.questionRepository.save(q1);
+        List<Question> all = this.questionRepository.findAll();
+        assertEquals(2, all.size()); // 데이터 갯수가 2개인지 확인
 
-        Question q2 = new Question();
-        q2.setSubject("스프링부트 질문입니다.");
-        q2.setContent("id는 자동생성되나요?");
-        q2.setCreateDate(LocalDateTime.now());
-        this.questionRepository.save(q2);
+        Question q = all.get(0);
+        assertEquals("SBB는 무엇인가요?", q.getSubject()); //첫번째 데이터 제목 확인
     }
 
 }
