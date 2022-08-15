@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -95,6 +96,21 @@ class SbbApplicationTests {
         assertTrue(oa.isPresent());
         Answer a = oa.get();
         assertEquals(2, a.getQuestion().getId());
+    }
+
+    @Transactional
+    @Test
+    void testJpa10(){ // 질문에 연결된 답변 찾기
+        Optional<Question> oq = this.questionRepository.findById(2);
+        // 이때, DB 세션 끊어지므로 transactional 꼭 추가하기 (추가 안하면 뒤에서 오류남)
+        // 실제 서버에서 JPA 프로그램을 실행할 때는 DB 세션이 종료되지 않음. 테스트 코드에서만 종료됨.
+        assertTrue(oq.isPresent());
+        Question q = oq.get();
+
+        List<Answer> answerList = q.getAnswerList(); // Lazy 방식 : 필요한 시점에 데이터를 가져오는 방식 <-> 반대는 Eager 방식
+
+        assertEquals(1, answerList.size());
+        assertEquals("네. ID는 자동으로 생성됩니다.", answerList.get(0).getContent());
     }
 
 }
