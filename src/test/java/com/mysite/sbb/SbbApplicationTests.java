@@ -40,4 +40,10 @@ class SbbApplicationTests {
         assertEquals(1, q.getId());
     }
 
+    @Test
+    void testJpa4(){
+        Question q = this.questionRepository.findBySubjectAndContent("SBB는 무엇인가요?", "SBB에 대해서 알고 싶습니다.");
+        assertEquals(1, q.getId());
+    }
+
 }
