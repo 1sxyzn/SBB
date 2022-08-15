@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class SbbApplicationTests {
@@ -17,7 +18,7 @@ class SbbApplicationTests {
     private QuestionRepository questionRepository;
 
     @Test
-    void testJpa(){
+    void testJpa(){ // 데이터 조회
         List<Question> all = this.questionRepository.findAll();
         assertEquals(2, all.size());
 
@@ -26,7 +27,7 @@ class SbbApplicationTests {
     }
 
     @Test
-    void testJpa2(){
+    void testJpa2(){ // 데이터 조회
         Optional<Question> oq = this.questionRepository.findById(1); // id 값으로 데이터 조회
         if(oq.isPresent()){
             Question q = oq.get();
@@ -35,22 +36,32 @@ class SbbApplicationTests {
     }
 
     @Test
-    void testJpa3(){
+    void testJpa3(){ // 데이터 조회
         Question q = this.questionRepository.findBySubject("SBB는 무엇인가요?");
         assertEquals(1, q.getId());
     }
 
     @Test
-    void testJpa4(){
+    void testJpa4(){ // 데이터 조회
         Question q = this.questionRepository.findBySubjectAndContent("SBB는 무엇인가요?", "SBB에 대해서 알고 싶습니다.");
         assertEquals(1, q.getId());
     }
 
     @Test
-    void testJpa5(){
+    void testJpa5(){ // 데이터 조회
         List<Question> qList = this.questionRepository.findBySubjectLike("SBB%");
         Question q  = qList.get(0);
         assertEquals("SBB는 무엇인가요?", q.getSubject());
+    }
+
+    @Test
+    void testJpa6(){ // 데이터 수정
+        Optional<Question> oq = this.questionRepository.findById(1);
+        assertTrue(oq.isPresent());
+        Question q = oq.get();
+        q.setSubject("제목 수정");
+        this.questionRepository.save(q);
+
     }
 
 }
