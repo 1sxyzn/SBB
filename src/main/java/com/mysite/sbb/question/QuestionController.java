@@ -14,21 +14,21 @@ import java.util.List;
 // 생성자 : 생성자를 작성하여 객체를 주입 (권장)
 // Setter : Setter 메서드를 작성하여 객체를 주입 (메서드에 @Autowired 애너테이션 필요)
 
-
+@RequestMapping("/question")
 @RequiredArgsConstructor // final이 붙은 속성을 포함하는 생성자를 자동으로 생성
 @Controller
 public class QuestionController {
 
     private final QuestionService questionService; // Controller -> Service -> Repository 구조로 데이터 처리
 
-    @RequestMapping("/question/list")
+    @RequestMapping("/list")
     public String list(Model model){
         List<Question> questionList = this.questionService.getList();
         model.addAttribute("questionList", questionList); // model : 자바 클래스와 템플릿 간의 연결고리 역할, 템플릿에서 이 값 사용
         return "question_list";
     }
 
-    @RequestMapping(value = "/question/detail/{id}")
+    @RequestMapping(value = "/detail/{id}")
     public String detail(Model model, @PathVariable("id") Integer id) {
         Question question = this.questionService.getQuestion(id);
         model.addAttribute("question", question);
