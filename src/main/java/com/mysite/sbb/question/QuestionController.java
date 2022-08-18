@@ -18,11 +18,11 @@ import java.util.List;
 @Controller
 public class QuestionController {
 
-    private final QuestionRepository questionRepository;
+    private final QuestionService questionService; // Controller -> Service -> Repository 구조로 데이터 처리
 
     @RequestMapping("/question/list")
     public String list(Model model){
-        List<Question> questionList = this.questionRepository.findAll();
+        List<Question> questionList = this.questionService.getList();
         model.addAttribute("questionList", questionList); // model : 자바 클래스와 템플릿 간의 연결고리 역할, 템플릿에서 이 값 사용
         return "question_list";
     }
