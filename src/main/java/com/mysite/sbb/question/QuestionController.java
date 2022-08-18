@@ -3,6 +3,7 @@ package com.mysite.sbb.question;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -25,5 +26,12 @@ public class QuestionController {
         List<Question> questionList = this.questionService.getList();
         model.addAttribute("questionList", questionList); // model : 자바 클래스와 템플릿 간의 연결고리 역할, 템플릿에서 이 값 사용
         return "question_list";
+    }
+
+    @RequestMapping(value = "/question/detail/{id}")
+    public String detail(Model model, @PathVariable("id") Integer id) {
+        Question question = this.questionService.getQuestion(id);
+        model.addAttribute("question", question);
+        return "question_detail";
     }
 }
