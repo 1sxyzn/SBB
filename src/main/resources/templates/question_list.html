@@ -1,5 +1,5 @@
-<link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
-<div class="container my-3">
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container my-3">
     <h2>Question List</h2>
     <table class = "table">
         <thead class = "table-dark">
@@ -22,3 +22,4 @@
         </tbody>
     </table>
 </div>
+</html>
