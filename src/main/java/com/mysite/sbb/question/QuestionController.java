@@ -3,8 +3,10 @@ package com.mysite.sbb.question;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 // 스프링의 의존성 주입(Dependency Injection) 방식 3가지
@@ -34,13 +36,16 @@ public class QuestionController {
     }
 
     @GetMapping("/create")
-    public String questionCreate(){
+    public String questionCreate(QuestionForm questionForm){
         return "question_form";
     }
 
     @PostMapping("/create")
-    public String questionCreate(@RequestParam String subject, @RequestParam String content){ // 메소드 오버로딩
-        this.questionService.create(subject, content);
+    public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult){ // BindingResult 매개변수는 항상 @Valid 매개변수 바로 뒤에 위치
+        if (bindingResult.hasErrors()) {
+            return "question_form";
+        }
+        this.questionService.create(questionForm.getSubject(), questionForm.getContent()); // 바인딩
         return "redirect:/question/list";
     }
 }
