@@ -4,6 +4,7 @@ import com.mysite.sbb.answer.Answer;
 import com.mysite.sbb.answer.AnswerRepository;
 import com.mysite.sbb.question.Question;
 import com.mysite.sbb.question.QuestionRepository;
+import com.mysite.sbb.question.QuestionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +25,9 @@ class SbbApplicationTests {
 
     @Autowired
     private AnswerRepository answerRepository;
+
+    @Autowired
+    private QuestionService questionService;
 
     @Test
     void testJpa(){ // 데이터 조회
@@ -115,6 +119,15 @@ class SbbApplicationTests {
 
         assertEquals(1, answerList.size());
         assertEquals("네. ID는 자동으로 생성됩니다.", answerList.get(0).getContent());
+    }
+
+    @Test
+    void testJpa11(){
+        for(int i=1; i<=300; i++){
+            String subject = String.format("테스트 데이터 %03d", i);
+            String content = "내용무";
+            this.questionService.create(subject, content);
+        }
     }
 
 }
