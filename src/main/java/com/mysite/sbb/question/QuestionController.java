@@ -2,6 +2,7 @@ package com.mysite.sbb.question;
 
 import com.mysite.sbb.answer.AnswerForm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,9 +24,10 @@ public class QuestionController {
     private final QuestionService questionService; // Controller -> Service -> Repository 구조로 데이터 처리
 
     @RequestMapping("/list")
-    public String list(Model model){
-        List<Question> questionList = this.questionService.getList();
-        model.addAttribute("questionList", questionList); // model : 자바 클래스와 템플릿 간의 연결고리 역할, 템플릿에서 이 값 사용
+    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page){
+        Page<Question> paging = this.questionService.getList(page);
+        model.addAttribute("paging", paging);
+        // model : 자바 클래스와 템플릿 간의 연결고리 역할, 템플릿에서 이 값 사용
         return "question_list";
     }
 
