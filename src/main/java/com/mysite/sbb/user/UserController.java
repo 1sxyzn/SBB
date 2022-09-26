@@ -17,6 +17,12 @@ import javax.validation.Valid;
 public class UserController {
     private final UserService userService;
 
+    @GetMapping("/login") // 실제로 로그인하는데 사용되는 POST는 스프링 시큐리티에서 지원. GET 매핑만 하면 됨
+    public String login(){
+        return "login_form";
+    }
+
+
     @GetMapping("/signup")
     public String signup(UserCreateForm userCreateForm){
         return "signup_form";
