@@ -1,14 +1,18 @@
 package com.mysite.sbb.question;
 
 import com.mysite.sbb.answer.AnswerForm;
+import com.mysite.sbb.user.SiteUser;
+import com.mysite.sbb.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 // 스프링의 의존성 주입(Dependency Injection) 방식 3가지
@@ -22,6 +26,7 @@ import java.util.List;
 public class QuestionController {
 
     private final QuestionService questionService; // Controller -> Service -> Repository 구조로 데이터 처리
+    private final UserService userService;
 
     @RequestMapping("/list")
     public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page){
@@ -44,11 +49,12 @@ public class QuestionController {
     }
 
     @PostMapping("/create")
-    public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult){ // BindingResult 매개변수는 항상 @Valid 매개변수 바로 뒤에 위치
+    public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal){ // BindingResult 매개변수는 항상 @Valid 매개변수 바로 뒤에 위치
         if (bindingResult.hasErrors()) {
             return "question_form";
         }
-        this.questionService.create(questionForm.getSubject(), questionForm.getContent()); // 바인딩
+        SiteUser siteUser = this.userService.getUser(principal.getName());
+        this.questionService.create(questionForm.getSubject(), questionForm.getContent(), siteUser); // 바인딩
         return "redirect:/question/list";
     }
 }
