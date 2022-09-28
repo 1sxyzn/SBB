@@ -53,4 +53,8 @@ public class QuestionService { // 모듈러, 보안 등의 이유로 서비스 �
         question.setModifyDate(LocalDateTime.now());
         this.questionRepository.save(question);
     }
+
+    public void delete(Question question){
+        this.questionRepository.delete(question);
+    }
 }
