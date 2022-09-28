@@ -46,4 +46,11 @@ public class QuestionService { // 모듈러, 보안 등의 이유로 서비스 �
         q.setAuthor(user);
         this.questionRepository.save(q);
     }
+
+    public void modify(Question question, String subject, String content){
+        question.setSubject(subject);
+        question.setContent(content);
+        question.setModifyDate(LocalDateTime.now());
+        this.questionRepository.save(question);
+    }
 }
