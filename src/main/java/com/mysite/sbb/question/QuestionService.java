@@ -57,4 +57,9 @@ public class QuestionService { // 모듈러, 보안 등의 이유로 서비스 �
     public void delete(Question question){
         this.questionRepository.delete(question);
     }
+
+    public void vote(Question question, SiteUser siteUser){
+        question.getVoter().add(siteUser);
+        this.questionRepository.save(question);
+    }
 }

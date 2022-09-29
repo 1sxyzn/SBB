@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -32,4 +33,7 @@ public class Question {
     private SiteUser author; // 한 사용자는 여러 질문이 가능
 
     private LocalDateTime modifyDate;
+
+    @ManyToMany
+    Set<SiteUser> voter; // 중복되면 안되므로 List가 아닌 Set
 }
