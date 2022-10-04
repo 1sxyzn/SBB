@@ -33,9 +33,10 @@ public class QuestionController {
     private final UserService userService;
 
     @RequestMapping("/list")
-    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page){
-        Page<Question> paging = this.questionService.getList(page);
+    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "kw", defaultValue = "") String kw){
+        Page<Question> paging = this.questionService.getList(page, kw);
         model.addAttribute("paging", paging);
+        model.addAttribute("kw", kw);
         // model : 자바 클래스와 템플릿 간의 연결고리 역할, 템플릿에서 이 값 사용
         return "question_list";
     }
